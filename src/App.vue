@@ -18,7 +18,7 @@
             return {
                 color: 'black',
                 contacts: [
-                    {fa: ['fas', 'envelope'], txt: 'contact@hertta.ee', url: 'mailto:contact@hertta.ee'},
+                    {fa: ['fas', 'envelope'], txt: 'atelier.hertta@gmail.com', url: 'mailto:contact@hertta.ee'},
                     {fa: ['fab', 'instagram'], txt: 'herttaknitwear', url: 'https://www.instagram.com/herttaknitwear/'},
                     {fa: ['fab', 'facebook-square'], txt: 'atelierhertta', url: 'https://www.facebook.com/atelierhertta'},
                 ]
