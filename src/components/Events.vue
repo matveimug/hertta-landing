@@ -58,6 +58,7 @@
   h1 {
     font-size: 4em;
     margin: 0 0.3em 0 0;
+    width: 0.7em;
   }
   label {
     cursor: pointer;

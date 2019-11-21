@@ -4,6 +4,7 @@
       <Logo :w="500" :h="250"/>
       <Contact :contacts="contacts" />
       <Events :data="sheets" />
+      <Particles v-if="snow === 'TRUE'" />
     </main>
   </div>
 </template>
@@ -12,11 +13,12 @@
   import Contact from './components/Contact.vue'
   import Logo from './components/Logo.vue'
   import Events from './components/Events.vue'
+  import Particles from './components/Particles'
 
   export default {
     name: 'app',
     components: {
-      Contact, Logo, Events
+      Contact, Logo, Events, Particles
     },
     data: function () {
       return {
@@ -28,7 +30,9 @@
         ],
         id: '1mt5KuWcilbSv7Z8Ypfm71-Qkr8ApvShbEsxfno3pU2s',
         sheets: [],
-        colors: ['rgb(0, 119, 174)', 'rgb(27, 63, 81)', 'rgb(226, 0, 105)', 'rgb(191, 193, 49)', 'rgb(192, 135, 171)', 'rgb(113, 42, 43)']
+        colors: ['rgb(0, 119, 174)', 'rgb(27, 63, 81)', 'rgb(226, 0, 105)', 'rgb(191, 193, 49)', 'rgb(192, 135, 171)', 'rgb(113, 42, 43)'],
+        nightmode: false,
+        snow: false
       }
     },
     methods: {
@@ -53,14 +57,20 @@
       }
     },
     created() {
+      let root = document.documentElement;
       fetch(`https://spreadsheets.google.com/feeds/list/${this.id}/od6/public/values?alt=json`)
           .then(res => res.json())
           .then(res => {
             this.sheets = this.parseSheet(res);
+            this.nightmode = this.sheets[0].nightmode;
+            this.snow = this.sheets[0].lumi;
+            if (this.nightmode === 'TRUE') {
+              root.style.setProperty('--color', 'white');
+              root.style.setProperty('--bg', 'black');
+            }
           });
-      let root = document.documentElement;
-      root.style.setProperty('--hover', this.colors[this.random(0, this.colors.length -1)]);
-    },
+      root.style.setProperty('--hover', this.colors[this.random(0, this.colors.length - 1)]);
+    }
   }
 </script>
 
@@ -68,9 +78,13 @@
   @import url('https://rsms.me/inter/inter.css');
   :root {
     --hover: rgb(113, 42, 43);
+    --color: black;
+    --bg: white;
   }
   html {
     font-family: 'Inter', sans-serif;
+    color: var(--color);
+    background-color: var(--bg);
   }
 
   @supports (font-variation-settings: normal) {
@@ -84,6 +98,7 @@
     min-height: 100vh;
     padding: 2em;
   }
+  main {}
   @media (min-width: 767px) {
     #app {
       display: flex;
@@ -100,7 +115,7 @@
 
   a, a:visited {
     text-decoration: none;
-    color: black;
+    color: var(--color);
     transition: all .2s ease;
   }
   a:hover, a:focus {
@@ -128,7 +143,8 @@
     width: 100%;
     margin-top: 2rem;
     border: none;
-    border-bottom: 1px solid rgba(0,0,0,.1);
+    border-bottom: 1px solid var(--color);
+    opacity: .1;
     margin-bottom: 2rem;
   }
 
